@@ -1,12 +1,8 @@
-package com.example.demo;
+package com.example.demo.service;
 
 import com.example.demo.entity.Task;
-import com.example.demo.entity.TaskStatus;
 import com.example.demo.repository.TaskRepository;
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;

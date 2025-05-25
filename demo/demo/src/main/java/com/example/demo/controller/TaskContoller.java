@@ -1,7 +1,10 @@
 package com.example.demo.controller;
 
+import com.example.demo.TaskService;
 import com.example.demo.entity.Task;
+import com.example.demo.entity.TaskSerializer;
 import com.example.demo.repository.TaskRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,49 +14,44 @@ import java.util.List;
 @RequestMapping("/tasks")
 public class TaskContoller {
 
-    private TaskRepository taskRepository;
+    private TaskService taskService;
 
     @Autowired
-    public TaskContoller(TaskRepository taskRepository) {
-        this.taskRepository = taskRepository;
+    public TaskContoller(TaskService taskService) {
+        this.taskService = taskService;
     }
 
     @GetMapping
     public List<Task> getTasks(){
-       return taskRepository.findAll();
+       return taskService.getTasks();
     }
 
     @GetMapping("/{id}")
     public Task getTask(@PathVariable Long id){
-        return taskRepository.findById(id).orElse(null);
+        return taskService.getTask(id);
     }
 
     @PostMapping
-    public Task saveTask(@RequestBody Task task){
-        return taskRepository.save(task);
+    public Task saveTask(@Valid @RequestBody Task task){ //@Valid annotation checks validations on task entity
+        System.out.println("Received Task: " + task);
+        return taskService.saveOrUpdateTask(task);
     }
 
     @PostMapping("/bulk")
-    public List<Task> savetasks(@RequestBody List<Task> tasks){
-        return taskRepository.saveAll(tasks);
+    public List<Task> savetasks(@Valid @RequestBody List<Task> tasks){//@Valid annotation checks validations on task entity
+        return taskService.saveOrUpdateTasks(tasks);
     }
 
 
 
     @PutMapping("/{id}")
-    public Task updateTask(@PathVariable Long id, @RequestBody Task updatedTask){
-        return taskRepository.findById(id).map(task -> {
-            task.setTitle(updatedTask.getTitle());
-            task.setDescription(updatedTask.getDescription());
-            task.setStatus(updatedTask.getStatus());
-            task.setDueDate(updatedTask.getDueDate());
-            return taskRepository.save(task);
-        }).orElse(null);
+    public Task updateTask(@PathVariable Long id, @Valid @RequestBody Task updatedTask){//@Valid annotation checks validations on task entity
+        return taskService.updateTask(id,updatedTask);
     }
 
     @DeleteMapping("/{id}")
     public void deleteTask(@PathVariable Long id){
-         taskRepository.deleteById(id);
+         taskService.deleteTask(id);
     }
 
 

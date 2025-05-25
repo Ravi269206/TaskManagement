@@ -1,9 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.TaskService;
+import com.example.demo.service.TaskService;
 import com.example.demo.entity.Task;
-import com.example.demo.entity.TaskSerializer;
-import com.example.demo.repository.TaskRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
